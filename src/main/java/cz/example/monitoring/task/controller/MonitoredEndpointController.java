@@ -4,10 +4,7 @@ import cz.example.monitoring.task.data.MonitoredEndpoint;
 import cz.example.monitoring.task.service.MonitoredEndpointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,23 +16,24 @@ public class MonitoredEndpointController {
     private final MonitoredEndpointService monitoredEndpointService;
 
     @GetMapping
-    public ResponseEntity<List<MonitoredEndpoint>> getAllEndpoints() {
-        return ResponseEntity.ok(monitoredEndpointService.getAllEndpoints());
+    public ResponseEntity<List<MonitoredEndpoint>> getAllEndpoints(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(monitoredEndpointService.getAllEndpoints(token));
     }
 
+
     @PostMapping
-    public ResponseEntity<MonitoredEndpoint> createEndpoint(@RequestBody MonitoredEndpoint endpoint) {
-        return ResponseEntity.ok(monitoredEndpointService.createEndpoint(endpoint));
+    public ResponseEntity<MonitoredEndpoint> createEndpoint(@RequestHeader("Authorization") String token, @RequestBody MonitoredEndpoint endpoint) {
+        return ResponseEntity.ok(monitoredEndpointService.createEndpoint(token, endpoint));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MonitoredEndpoint> updateEndpoint(@PathVariable Long id, @RequestBody MonitoredEndpoint updatedEndpoint) {
-        return ResponseEntity.ok(monitoredEndpointService.updateEndpoint(id, updatedEndpoint));
+    public ResponseEntity<MonitoredEndpoint> updateEndpoint(@PathVariable Long id, @RequestHeader("Authorization") String token, @RequestBody MonitoredEndpoint updatedEndpoint) {
+        return ResponseEntity.ok(monitoredEndpointService.updateEndpoint(token, id, updatedEndpoint));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEndpoint(@PathVariable Long id) {
-        monitoredEndpointService.deleteEndpoint(id);
+    public ResponseEntity<Void> deleteEndpoint(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        monitoredEndpointService.deleteEndpoint(id, token);
         return ResponseEntity.noContent().build();
     }
 }

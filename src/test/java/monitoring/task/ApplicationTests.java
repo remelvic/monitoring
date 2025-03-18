@@ -1,10 +1,10 @@
-package task.applifting;
+package monitoring.task;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppliftingApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

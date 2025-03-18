@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+//todo add validate
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
@@ -24,33 +25,31 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> users = repository.findAll();
         log.info(this.getClass().getName() + " --> All users was returned");
         return users.stream().map(User::new).collect(Collectors.toList());
-//        return users.stream().map(UserMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    // todo: change this to getUserByToken
     public User getUserById(Long id) {
         Optional<UserEntity> user = repository.findById(id);
         if (user.isEmpty()) {
             log.info(this.getClass().getName() + " --> The user was not found");
-            return
+            return null;
         } else {
             log.info(this.getClass().getName() + " --> The user was found");
             // todo: change request code
-            return
+            return null;
         }
     }
 
     @Override
     public User createUser(User userDTO) {
         Optional<UserEntity> existingUser = repository
-                .findByUserInfo(userDTO.getUsername(), userDTO.getEmail(), userDTO.getAccessToken());
+                .findByUsernameAndEmailAndAccessToken(userDTO.getUsername(), userDTO.getEmail(), userDTO.getAccessToken());
 
         if (existingUser.isEmpty()) {
             UserEntity user = new UserEntity();
             user.setUsername(userDTO.getUsername());
             user.setEmail(userDTO.getEmail());
-            user.setAccessToken(UUID.randomUUID());
+            user.setAccessToken(UUID.randomUUID().toString());
 
             UserEntity savedUser = repository.save(user);
             log.info(this.getClass().getName() + " --> User {} was created", userDTO.getUsername());
@@ -59,14 +58,14 @@ public class UserServiceImpl implements UserService {
         } else {
             // todo: change request code
             log.info(this.getClass().getName() + " --> User {} already exists", userDTO.getUsername());
-            return
+            return null;
         }
     }
 
     @Override
     public User updateUserById(Long id, User user) {
         UserEntity existingUser = repository.findById(id).orElse(null);
-
+        // todo: add validate
         if (existingUser != null) {
             existingUser.setUsername(user.getUsername());
             existingUser.setEmail(user.getEmail());
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
         } else {
             log.info(this.getClass().getName() + " --> User {} doesn't exists", id);
             // todo: change request code
-            return
+            return null;
         }
     }
 
@@ -91,5 +90,10 @@ public class UserServiceImpl implements UserService {
             log.info(this.getClass().getName() + " --> User {} doesn't exists", id);
         }
 
+    }
+
+    @Override
+    public UserEntity getUserByAccessToken(String token) {
+        return repository.findByAccessToken(token).orElse(null);
     }
 }

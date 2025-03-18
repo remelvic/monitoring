@@ -1,10 +1,7 @@
 package cz.example.monitoring.task.entity;
 
-import cz.example.monitoring.task.data.User;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "User")
@@ -16,6 +13,6 @@ public class UserEntity {
     private Long id;
     private String username;
     private String email;
-    private UUID accessToken;
+    private String accessToken;
 
 }

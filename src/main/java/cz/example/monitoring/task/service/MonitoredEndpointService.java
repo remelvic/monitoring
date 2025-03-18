@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface MonitoredEndpointService {
 
-    List<MonitoredEndpoint> getAllEndpoints();
-    MonitoredEndpoint createEndpoint(MonitoredEndpoint endpoint);
-    MonitoredEndpoint updateEndpoint(Long id, MonitoredEndpoint endpoint);
-    void deleteEndpoint(Long id);
+    List<MonitoredEndpoint> getAllEndpoints(String token);
+    MonitoredEndpoint createEndpoint(String token, MonitoredEndpoint endpoint);
+    MonitoredEndpoint updateEndpoint(String token, Long id, MonitoredEndpoint endpoint);
+    void deleteEndpoint(Long id, String token);
 
 }
